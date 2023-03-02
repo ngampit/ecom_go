@@ -2,13 +2,14 @@ package repository
 
 import (
 	"ecom_go/model"
-
 	"github.com/jinzhu/gorm"
 )
 
 //OrderRepository --> Repository for Order Model
 type OrderRepository interface {
 	OrderProduct(int, int, int) error
+	GetOrder(int)error
+	DeleteOrder(model.Order) (model.Order, error)
 }
 
 type orderRepository struct {
@@ -22,6 +23,10 @@ func NewOrderRepository() OrderRepository {
 	}
 }
 
+func (db *orderRepository) GetOrder(id int) (order model.Order, err error) {
+	return order, db.connection.First(&order, id).Error
+}
+
 func (db *orderRepository) OrderProduct(userID int, productID int, quantity int) error {
 	return db.connection.Create(&model.Order{
 		ProductID: uint(productID),
@@ -29,4 +34,11 @@ func (db *orderRepository) OrderProduct(userID int, productID int, quantity int)
 		Quantity:  quantity,
 	}).Error
 
+}
+
+func (db *orderRepository) DeleteOrder(order model.Order) (model.Order, error) {
+	if err := db.connection.First(&Order, order.ID).Error; err != nil {
+		return order, err
+	}
+	return order, db.connection.Delete(&order).Error
 }

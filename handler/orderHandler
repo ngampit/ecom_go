@@ -5,14 +5,16 @@ import (
 	"ecom_go/route"
 	"net/http"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 )
 
 //OrderHandler --> Handler for Order Entity
 type OrderHandler interface {
 	OrderProduct(*gin.Context)
+	DeleteOrder(*gin.Context)
+	GetOrder(*gin.Context)
 }
+
 
 type orderHandler struct {
 	repo repository.OrderRepository

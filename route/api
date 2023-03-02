@@ -33,22 +33,20 @@ func RunAPI(address string) error {
 		userProtectedRoutes.GET("/", userHandler.GetAllUser)
 		userProtectedRoutes.GET("/:user", userHandler.GetUser)
 		userProtectedRoutes.GET("/:user/products", userHandler.GetProductOrdered)
-		userProtectedRoutes.PUT("/:user", userHandler.UpdateUser)
-		userProtectedRoutes.DELETE("/:user", userHandler.DeleteUser)
 	}
 
 	productRoutes := apiRoutes.Group("/products", middleware.AuthorizeJWT())
 	{
 		productRoutes.GET("/", productHandler.GetAllProduct)
-		productRoutes.GET("/:product", productHandler.GetProduct)
-		productRoutes.POST("/", productHandler.AddProduct)
-		productRoutes.PUT("/:product", productHandler.UpdateProduct)
-		productRoutes.DELETE("/:product", productHandler.DeleteProduct)
+		productRoutes.GET("/:product", productHandler.Getproduct)
+		productRoutes.POST("/", productHandler.Addproduct)
 	}
 
 	orderRoutes := apiRoutes.Group("/order", middleware.AuthorizeJWT())
 	{
 		orderRoutes.POST("/product/:product/quantity/:quantity", orderHandler.OrderProduct)
+		orderRoutes.DELETE("/:order", orderHandler.DeleteOrder)
+		orderRoutes.GET("/", orderHandler.GetAllOrder)
 	}
 
 	return r.Run(address)
