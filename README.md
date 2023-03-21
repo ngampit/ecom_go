@@ -1,1 +1,1 @@
-# ecom_go project for nevers
+# ecom_go Golang e-commerce project
